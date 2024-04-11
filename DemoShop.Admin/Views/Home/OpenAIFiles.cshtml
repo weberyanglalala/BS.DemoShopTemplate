@@ -1,0 +1,49 @@
+<div id="app" class="container p-5">
+    <h1 class="mb-3">Open AI Assistants API 檔案上傳區</h1>
+    <div class="mb-3">
+        <button v-on:click="uploadFileModal" class="btn btn-primary">Add</button>
+    </div>
+    <easy-data-table show-index
+                     alternating
+                     :headers="headers"
+                     :items="files"
+                     :loading="loading">
+        <template #item-id="{id}">
+            <div class="p-2">
+                <span v-on:click="copyToClipboard(id)">{{id}}</span>
+            </div>
+        </template>
+    </easy-data-table>
+    <!-- Create File Modal -->
+    <div class="modal fade" id="create-modal" tabindex="-1" aria-labelledby="edit-modal" aria-hidden="true" ref="fileUploadModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">Upload File</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="input-group has-validation mb-3">
+                                <input type="file" class="form-control" aria-label="new file" :class="{'is-invalid': !newFileValidateState}" v-on:change="onFileChange">
+                                <div class="invalid-feedback">
+                                    {{newFileErrorMsg}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" v-on:click="uploadNewFile" :disabled="!newFileValidateState">新增</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/js/OpenAIFiles.js" asp-append-version="true"></script>
+}

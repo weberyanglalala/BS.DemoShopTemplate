@@ -3,7 +3,7 @@ namespace DemoShop.Admin.Models.Settings;
 public class OpenAISettings
 {
     public const string SettingKey = "OpenAISettings";
-    
+
     public string ApiKey { get; set; }
     public string FileUploadUrl { get; set; }
     public string GetAllFilesUrl { get; set; }

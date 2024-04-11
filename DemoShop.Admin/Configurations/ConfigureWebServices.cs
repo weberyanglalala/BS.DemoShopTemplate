@@ -9,6 +9,7 @@ public static class ConfigureWebServices
 {
     public static IServiceCollection AddWebServices(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddHttpClient();
         services.Configure<OpenAISettings>(configuration.GetSection(OpenAISettings.SettingKey))
             .AddSingleton(setting => setting.GetRequiredService<IOptions<OpenAISettings>>().Value);
         services.AddScoped<UserMangerService>();
