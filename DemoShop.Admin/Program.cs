@@ -1,4 +1,5 @@
 using DemoShop.Admin.Configurations;
+using DemoShop.Admin.Models.Settings;
 using DemoShop.ApplicationCore.Interfaces;
 using DemoShop.ApplicationCore.Interfaces.TodoService;
 using DemoShop.ApplicationCore.Services;
@@ -25,8 +26,8 @@ namespace DemoShop.Admin
                 .AddApplicationCoreServices()
                 .AddAuthServices()
                 .AddSwaggerService()
-                .AddWebServices();
-              
+                .AddWebServices(builder.Configuration);
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
