@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
 
     <!--Vue 3 easy data table-->
-    <link href="https://unpkg.com/vue3-easy-data-table/dist/style.css" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/vue3-easy-data-table@1.5.47/dist/style.min.css" rel="stylesheet"/>
     <!--sb styles.css-->
     <link href="~/css/style.css" rel="stylesheet"/>
     @await RenderSectionAsync("CSS", required: false)
@@ -137,6 +137,13 @@
                         </div>
                         OpenAIFiles
                     </a>
+
+                    <a class="nav-link" href="/Home/OpenAIAssistants">
+                        <div class="sb-nav-link-icon">
+                            <i class="fas fa-table"></i>
+                        </div>
+                        OpenAIAssistants
+                    </a>
                 </div>
             </div>
             <div class="sb-sidenav-footer">
@@ -174,7 +181,7 @@
 <script src="https://cdn.jsdelivr.net/npm/vue@3.2.1/dist/vue.global.js"></script>
 
 <!-- vue3-easy-data-table -->
-<script src="https://unpkg.com/vue3-easy-data-table"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue3-easy-data-table@1.5.47/dist/vue3-easy-data-table.umd.min.js"></script>
 
 <!--datatable-->
 <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
@@ -184,6 +191,8 @@
 
 <script src="~/js/request.js" asp-append-version="true"></script>
 
+<!-- sweet alert -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 @await RenderSectionAsync("Scripts", required: false)
 </body>
