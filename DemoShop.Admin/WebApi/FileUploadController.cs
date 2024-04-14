@@ -8,13 +8,11 @@ namespace DemoShop.Admin.WebApi;
 [ApiController]
 public class FileUploadController : ControllerBase
 {
-    private readonly IConfiguration _configuration;
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly OpenAISettings _openAiSettings;
 
-    public FileUploadController(IConfiguration configuration, IHttpClientFactory httpClientFactory, OpenAISettings openAiSettings)
+    public FileUploadController(IHttpClientFactory httpClientFactory, OpenAISettings openAiSettings)
     {
-        _configuration = configuration;
         _httpClientFactory = httpClientFactory;
         _openAiSettings = openAiSettings;
     }

@@ -1,0 +1,84 @@
+<div id="app" class="container p-5">
+    <h1 class="mb-3">Open AI Assistants API Assistants</h1>
+    <div class="mb-3">
+        <button class="btn btn-primary" v-on:click="openAssistantsCreateModal">Add</button>
+    </div>
+
+    <easy-data-table show-index
+                     alternating
+                     :headers="headers"
+                     :items="assistants"
+                     :loading="loading">
+        <template #item-operation="item">
+            <div class="p-2">
+                <button class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#edit-modal">
+                    Create Thread And Run
+                </button>
+            </div>
+        </template>
+    </easy-data-table>
+
+    @*
+        public class CreateAssistantRequest
+        {
+           public string Name { get; set; }
+           public string Instructions { get; set; }
+           public List<string> FileIds { get; set; }
+        } 
+    *@
+    <!-- Create Assistant Modal -->
+    <div class="modal fade" id="create-modal" tabindex="-1" aria-labelledby="edit-modal" aria-hidden="true" ref="assistantsCreateModalref">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">Create Assistant</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form class="row">
+                        <div class="col-12">
+                            <label for="newAssistantName" class="form-label">Assistant Name</label>
+                            <input type="text" class="form-control" id="newAssistantName" v-model="newAssistantName" :class="{'is-invalid': !newAssistantNameValidateState}">
+                            <div class="invalid-feedback">
+                                {{newAssistantNameErrorMsg}}
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <label for="newAssistantInstructions" class="form-label">Assistant Instructions</label>
+                            <textarea
+                                class="form-control is-valid"
+                                id="newAssistantInstructions"
+                                v-model="newAssistantInstructions"
+                                :class="{'is-invalid': !newAssistantInstructionsValidateState}"
+                                v-on:input="autoResizeTextarea"
+                            >
+                            </textarea>
+                            <div class="invalid-feedback">
+                                {{newAssistantInstructionsErrorMsg}}
+                            </div>
+                        </div>
+
+                        <div class="col-12" v-if="files">
+                            <h3 class="mb-3">Files</h3>
+                            <div class="form-check" v-for="file in files" :key="file.id">
+                                <label class="form-check-label" :for="file.id">
+                                    {{file.filename}}
+                                </label>
+                                <input class="form-check-input" type="checkbox" v-model="file.isSelected" id="file.id">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" :disabled="!isFormValid" v-on:click="createNewAssistant">新增</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/js/OpenAIAssistants.js" asp-append-version="true"></script>
+}

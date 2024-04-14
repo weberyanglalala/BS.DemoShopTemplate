@@ -67,19 +67,29 @@ const app = Vue.createApp({
             },
             uploadNewFile() {
                 this.loading = true;
+                Swal.fire({
+                    title: '載入中...'
+                });
                 const formData = new FormData();
                 formData.append('file', this.newFile);
                 httpPost(`/api/FileUpload/UploadFileToOpenAI`, formData)
                     .then(response => {
                         if (response.isSuccess) {
+                            Swal.fire({
+                                title: "Success",
+                                text: response.message,
+                                icon: "success"
+                            });
                             this.newFileModal.hide();
+                            this.newFile = null;
+                            this.newFileValidateState = false;
+                            this.newFileErrorMsg = "";
                         }
                     })
                     .catch(err => {
                         console.error(err)
                     })
                     .finally(() => {
-                        this.newFile = null;
                         this.loading = false;
                         this.getAllFiles();
                     })
