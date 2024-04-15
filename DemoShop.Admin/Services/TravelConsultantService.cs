@@ -47,7 +47,8 @@ public class TravelConsultantService
                         content = message
                     }
                 }
-            }
+            },
+            temperature = 0.2,
         };
 
         var jsonPayload = System.Text.Json.JsonSerializer.Serialize(payload);
