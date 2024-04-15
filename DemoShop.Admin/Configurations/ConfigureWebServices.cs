@@ -12,7 +12,10 @@ public static class ConfigureWebServices
         services.AddHttpClient();
         services.Configure<OpenAISettings>(configuration.GetSection(OpenAISettings.SettingKey))
             .AddSingleton(setting => setting.GetRequiredService<IOptions<OpenAISettings>>().Value);
+        services.Configure<LineBotSettings>(configuration.GetSection(LineBotSettings.SettingKey))
+            .AddSingleton(setting => setting.GetRequiredService<IOptions<LineBotSettings>>().Value);
         services.AddScoped<UserMangerService>();
+        services.AddScoped<TravelConsultantService>();
         return services;
     }
 }
