@@ -28,6 +28,7 @@ const app = Vue.createApp({
                 // }
             ],
             assistantsCreateModal: null,
+            createThreadAndRunModal: null,
             newAssistantName: "",
             newAssistantNameValidateState: false,
             newAssistantNameErrorMsg: "",
@@ -35,9 +36,22 @@ const app = Vue.createApp({
             newAssistantInstructionsValidateState: false,
             newAssistantInstructionsErrorMsg: "",
             files: [],
+            singleThreadRunMsg: "",
+            singleThreadRunMsgErrMsg: "",
+            singleThreadRunMsgValidState: false,
+            singleThreadRunResult: "",
+            singleRunMessageResult: "",
+            singleThreadId: "thread_Zn6eNq6dIjaYCDLG8FbbGwcq",
+            currentAssistantId: "",
+            currentAssistantName: "",
+            currentAssistant: null,
+            currentRunId: "",
         };
     },
     methods: {
+        validateThreadMessageLength(value) {
+            return value.trim().length > 0 && value.trim().length <= 500;
+        },
         validateAssistantNameLength(value) {
             return value.trim().length > 0 && value.trim().length <= 30;
         },
@@ -46,6 +60,12 @@ const app = Vue.createApp({
         },
         openAssistantsCreateModal() {
             this.assistantsCreateModal.show();
+        },
+        openCreateThreadAndRunModal(id) {
+            this.currentAssistantId = id;
+            this.currentAssistant = this.assistants.find(assistant => assistant.id === id);
+            this.currentAssistantName = this.currentAssistant.name;
+            this.createThreadAndRunModal.show();
         },
         autoResizeTextarea(event) {
             const textarea = event.target;
@@ -90,6 +110,9 @@ const app = Vue.createApp({
                     this.loading = false;
                 });
         },
+        copyToClipboard(text) {
+            navigator.clipboard.writeText(text)
+        },
         createNewAssistant() {
             this.loading = true;
             Swal.fire({
@@ -123,6 +146,60 @@ const app = Vue.createApp({
                     this.loading = false;
                     this.getAssistants();
                 });
+        },
+        createThreadAndRun() {
+            this.loading = true;
+            Swal.fire({
+                title: '載入中...'
+            });
+            httpPost(`/api/Threads/CreateThreadAndRun`, {
+                assistant_id: this.currentAssistantId,
+                thread: {
+                    messages: [
+                        {role: "user", content: this.singleThreadRunMsg}
+                    ]
+                }
+            })
+                .then(response => {
+                    if (response.isSuccess) {
+                        const body = JSON.parse(response.body);
+                        this.singleThreadRunResult = body;
+                        this.singleThreadId = body.thread_id;
+                        console.log(this.singleThreadId)
+                        Swal.fire({
+                            icon: 'success',
+                            title: '成功',
+                            text: 'Thread Create 成功！',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                        return body.data;
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                })
+                .finally(() => {
+                    this.loading = false;
+                    this.getAssistants();
+                });
+        },
+        getCurrentThreadRunResult() {
+            this.loading = true;
+            httpGet(`/api/Messages/GetMessagesByThreadId/?threadId=${this.singleThreadId}`)
+                .then(response => {
+                    if (response.isSuccess) {
+                        const body = JSON.parse(response.body);
+                        this.singleRunMessageResult = body.data[0].content[0].text.value.replace("【5†source】。", "");
+                        console.log(this.singleRunMessageResult)
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                })
+                .finally(() => {
+                    this.loading = false;
+                });
         }
 
     },
@@ -132,6 +209,7 @@ const app = Vue.createApp({
         this.assistantsCreateModal = new bootstrap.Modal(this.$refs.assistantsCreateModalref, {
             keyboard: false
         });
+        this.createThreadAndRunModal = new bootstrap.Modal(this.$refs.createThreadAndRunModalref, {keyboard: false});
     },
     computed: {
         selectedFileIds() {
@@ -156,6 +234,13 @@ const app = Vue.createApp({
             handler(val) {
                 this.newAssistantInstructionsValidateState = this.validateAssistantInstructionsLength(val)
                 this.newAssistantInstructionsErrorMsg = this.newAssistantInstructionsValidateState ? "" : "Instructions length should be 1-2000 characters";
+            },
+            immediate: false
+        },
+        'singleThreadRunMsg': {
+            handler(val) {
+                this.singleThreadRunMsgValidState = this.validateThreadMessageLength(val);
+                this.singleThreadRunMsgErrMsg = this.singleThreadRunMsgValidState ? "" : "Message length should be 1-500 characters";
             },
             immediate: false
         }

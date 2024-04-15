@@ -9,11 +9,16 @@
                      :headers="headers"
                      :items="assistants"
                      :loading="loading">
-        <template #item-operation="item">
+        @* <template #item-operation="item"> *@
+        @*     <div class="p-2"> *@
+        @*         <button class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#create-thread-and-run-modal" v-on:click="openCreateThreadAndRunModal(item.id)"> *@
+        @*             Create Thread And Run *@
+        @*         </button> *@
+        @*     </div> *@
+        @* </template> *@
+        <template #item-id="{id}">
             <div class="p-2">
-                <button class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#edit-modal">
-                    Create Thread And Run
-                </button>
+                <span role="button" v-on:click="copyToClipboard(id)">{{id}}</span>
             </div>
         </template>
     </easy-data-table>
@@ -76,6 +81,39 @@
             </div>
         </div>
     </div>
+
+    <!-- Create Thread And Run -->
+    @* <div class="modal fade" id="create-thread-and-run-modal" tabindex="-1" aria-labelledby="edit-modal" aria-hidden="true" ref="createThreadAndRunModalref"> *@
+    @*     <div class="modal-dialog modal-lg"> *@
+    @*         <div class="modal-content"> *@
+    @*             <div class="modal-header"> *@
+    @*                 <h1 class="modal-title fs-5">{{currentAssistantName}}</h1> *@
+    @*                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> *@
+    @*             </div> *@
+    @*             <div class="modal-body"> *@
+    @*                 <form class="row"> *@
+    @*                     <div class="col-12"> *@
+    @*                         <label for="newAssistantInstructions" class="form-label">Assistant Instructions</label> *@
+    @*                         <textarea *@
+    @*                             class="form-control is-valid" *@
+    @*                             v-model="singleThreadRunMsg" *@
+    @*                             :class="{'is-invalid': !singleThreadRunMsgValidState}" *@
+    @*                             v-on:input="autoResizeTextarea" *@
+    @*                         > *@
+    @*                         </textarea> *@
+    @*                         <div class="invalid-feedback"> *@
+    @*                             {{singleThreadRunMsgErrMsg}} *@
+    @*                         </div> *@
+    @*                     </div> *@
+    @*                 </form> *@
+    @*             </div> *@
+    @*             <div class="modal-footer"> *@
+    @*                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button> *@
+    @*                 <button type="button" class="btn btn-primary" :disabled="!singleThreadRunMsgValidState" v-on:click="createThreadAndRun">送出</button> *@
+    @*             </div> *@
+    @*         </div> *@
+    @*     </div> *@
+    @* </div> *@
 </div>
 
 @section Scripts
