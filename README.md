@@ -23,3 +23,24 @@
 ## 其他
 - [Entity Framework Core 工具參考 - .NET Core CLI](https://learn.microsoft.com/zh-tw/ef/core/cli/dotnet)。
 - [Scaffolding (反向工程)](https://learn.microsoft.com/zh-tw/ef/core/managing-schemas/scaffolding/?tabs=dotnet-core-cli)。
+
+## Update Admin Project Settings By Adding user-secrets
+```json
+{
+	// ...
+	"OpenAISettings": {
+		"ApiKey": "your-api-key",
+		"FileUploadUrl": "https://api.openai.com/v1/files",
+		"GetAllFilesUrl": "https://api.openai.com/v1/files",
+		"AssistantsUrl": "https://api.openai.com/v1/assistants",
+		"AssistantThreadAPIUrl": "https://api.openai.com/v1/threads",
+		"AssistantRunAPIUrl": "https://api.openai.com/v1/threads/runs"
+	},
+	"LineBotSettings": {
+		"AdminUserId": "your-admin-user-id",
+		"ChannelAccessToken": "your-channel",
+		"OpenAIAssistantId": "your-assistant-id"
+	}
+	// ...
+}
+```
