@@ -200,8 +200,31 @@ const app = Vue.createApp({
                 .finally(() => {
                     this.loading = false;
                 });
+        },
+        // v-on:click="deleteAssistant(item.id)"
+        deleteAssistant(id) {
+            this.loading = true;
+            console.log(id)
+            httpPost(`/api/assistants/DeleteAssistant`, { AssistantId: id })
+                .then(response => {
+                    if (response.isSuccess) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: '成功',
+                            text: '助理已成功刪除！',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                })
+                .finally(() => {
+                    this.loading = false;
+                    this.getAssistants();
+                });
         }
-
     },
     mounted() {
         this.getAssistants();

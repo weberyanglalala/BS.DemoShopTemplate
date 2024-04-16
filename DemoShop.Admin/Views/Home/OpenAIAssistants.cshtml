@@ -16,9 +16,18 @@
         @*         </button> *@
         @*     </div> *@
         @* </template> *@
+        
         <template #item-id="{id}">
             <div class="p-2">
                 <span role="button" v-on:click="copyToClipboard(id)">{{id}}</span>
+            </div>
+        </template>
+
+        <template #item-operation="item">
+            <div class="p-2">
+                <button class="btn btn-danger" v-on:click="deleteAssistant(item.id)">
+                    Delete
+                </button>
             </div>
         </template>
     </easy-data-table>

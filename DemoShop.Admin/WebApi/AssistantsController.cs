@@ -53,6 +53,7 @@ public class AssistantsController : ControllerBase
                 Message = "Assistant created successfully."
             });
         }
+
         {
             return Ok(new
             {
@@ -89,6 +90,38 @@ public class AssistantsController : ControllerBase
             {
                 IsSuccess = false,
                 Message = "Failed to upload file."
+            });
+        }
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> DeleteAssistant([FromBody] DeleteAssistantRequest request)
+    {
+        var client = _httpClientFactory.CreateClient();
+
+        client.DefaultRequestHeaders.Authorization =
+            new AuthenticationHeaderValue("Bearer", _openAiSettings.ApiKey);
+
+        client.DefaultRequestHeaders.Add("OpenAI-Beta", "assistants=v1");
+
+        var endpoint = $"{_openAiSettings.AssistantsUrl}/{request.AssistantId}";
+        var response = await client.DeleteAsync(endpoint);
+        if (response.IsSuccessStatusCode)
+        {
+            var responseString = await response.Content.ReadAsStringAsync();
+            return Ok(new
+            {
+                IsSuccess = true,
+                Body = responseString,
+                Message = "Assistant deleted successfully."
+            });
+        }
+        else
+        {
+            return Ok(new
+            {
+                IsSuccess = false,
+                Message = "Failed to delete an assistant"
             });
         }
     }
