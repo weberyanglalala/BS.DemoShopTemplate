@@ -34,7 +34,7 @@ public class AssistantsController : ControllerBase
         {
             name = request.Name,
             instructions = request.Instructions,
-            model = "gpt-3.5-turbo-1106",
+            model = "gpt-4-turbo",
             tools = new[] { new { type = "retrieval" } },
             file_ids = request.FileIds
         };
